@@ -1,10 +1,29 @@
 import Navbar from "../../component/Navbar";
+import { useState, useEffect } from "react";
+import { getDashboardSummary } from "../../api/dashboard";
 
 const Dashboard = () => {
+  const [data, setData] = useState({
+    totalTrips: 0,
+    totalAmount: 0,
+    totalSharedTrips: 0,
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getDashboardSummary();
+      setData(res);
+    };
+    fetchData();
+  }, []);
   const kpiCards = [
-    { label: "Total Trips", value: "128", delta: "+12.5%" },
-    { label: "Total Expenses", value: "₹ 4.8L", delta: "+8.1%" },
-    { label: "Trips Shared With Me", value: "24", delta: "+3.2%" },
+    { label: "Total Trips", value: `${data.totalTrips}`, delta: "+12.5%" },
+    { label: "Total Expenses", value: `${data.totalAmount}`, delta: "+8.1%" },
+    {
+      label: "Trips Shared With Me",
+      value: `${data.totalSharedTrips}`,
+      delta: "+3.2%",
+    },
   ];
   const tripTrends = [
     { month: "Jan", value: 12 },

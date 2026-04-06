@@ -16,8 +16,12 @@ import { TbBrandTripadvisor } from "react-icons/tb";
 const navItems = [
   { title: "Dashboard", path: "/dashboard", icon: LuLayoutDashboard },
   { title: "Trips", path: "/trips", icon: TbBrandTripadvisor },
+  {
+    title: "Trips Shared with Me",
+    path: "/shared-trips",
+    icon: TbBrandTripadvisor,
+  },
   { title: "Settings", path: "/settings", icon: MdOutlineSettings },
-  { title: "Shared Trips", path: "/shared-trips", icon: TbBrandTripadvisor },
 ];
 
 const Sidebar = () => {
