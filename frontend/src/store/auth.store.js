@@ -4,15 +4,13 @@ import {
   loginUser,
   getCurrentUser,
   logoutUser,
-} from "../api/authApi";
+} from "../api/auth";
 
 export const registerUserAsync = createAsyncThunk(
   "/auth/signup",
   async (formData, { rejectWithValue }) => {
-    console.log("FormData received in Thunk:");
     try {
       const response = await registerUser(formData);
-      console.log("API Response in Thunk:", response);
       return response;
     } catch (error) {
       return rejectWithValue(
@@ -48,16 +46,24 @@ export const getCurrentUserAsync = createAsyncThunk(
   },
 );
 
-export const logoutUserAsync = createAsyncThunk("/auth/logout", async () => {
-  await logoutUser();
-  return true;
-});
+export const logoutUserAsync = createAsyncThunk(
+  "/auth/logout",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await logoutUser();
+      return response;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data?.message || "Logout failed");
+    }
+  },
+);
 
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: null,
     isAuthenticated: false,
+    isAuthChecked: false,
     isLoading: false,
     error: null,
   },
@@ -91,21 +97,26 @@ const authSlice = createSlice({
       })
       .addCase(getCurrentUserAsync.pending, (state) => {
         state.isLoading = true;
+        state.isAuthChecked = false;
       })
       .addCase(getCurrentUserAsync.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.data;
         state.isAuthenticated = true;
+        state.isAuthChecked = true;
       })
       .addCase(getCurrentUserAsync.rejected, (state) => {
         state.isLoading = false;
         state.user = null;
         state.isAuthenticated = false;
+        state.isAuthChecked = true;
+        state.error = "Session expired";
       })
       .addCase(logoutUserAsync.fulfilled, (state) => {
         state.user = null;
         state.isAuthenticated = false;
         state.error = null;
+        state.isAuthChecked = true;
       });
   },
 });

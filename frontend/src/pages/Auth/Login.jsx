@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router";
-import { loginUserAsync } from "../store/auth.store";
+import { loginUserAsync } from "../../store/auth.store";
 import { useEffect } from "react";
+import { handleError, handleSuccess } from "../../utils/common";
 const Login = () => {
   const {
     register,
@@ -15,12 +16,21 @@ const Login = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/dashboard");
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000);
     }
   }, [isAuthenticated, navigate]);
 
   const onSubmit = async (data) => {
-    await dispatch(loginUserAsync(data));
+    try {
+      const response = await dispatch(loginUserAsync(data)).unwrap();
+      if (response?.success) {
+        handleSuccess(response.message || "Login successful");
+      }
+    } catch (error) {
+      handleError(error || "Login failed");
+    }
   };
 
   return (

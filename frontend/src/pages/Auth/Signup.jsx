@@ -1,8 +1,10 @@
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
-import { registerUserAsync } from "../store/auth.store";
+import { registerUserAsync } from "../../store/auth.store";
 import { useState } from "react";
+import { ToastContainer } from "react-toastify";
+import { handleError, handleSuccess } from "../../utils/common";
 
 const Signup = () => {
   const { isLoading } = useSelector((state) => state.auth);
@@ -37,12 +39,15 @@ const Signup = () => {
         formData.append("email", data.email);
         formData.append("password", data.password);
         formData.append("profileImage", data.profileImage[0]);
-        await dispatch(registerUserAsync(formData));
-        navigate("/login");
-        reset();
+        const response = await dispatch(registerUserAsync(formData)).unwrap();
+        handleSuccess(response.message || "Signup successfull");
+        setTimeout(() => {
+          navigate("/login");
+          reset();
+        }, 2000);
       }
     } catch (error) {
-      throw new Error("Signup failed: " + error.message);
+      handleError(error || "Signup failed");
     }
   };
 
@@ -169,6 +174,7 @@ const Signup = () => {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

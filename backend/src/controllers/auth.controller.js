@@ -6,8 +6,6 @@ import {
 export const signupUserController = async (req, res) => {
   try {
     const newUser = await signupUserService(req.body, req.file);
-    console.log(req.file);
-    console.log(req.body);
     res.status(201).json({
       success: true,
       message: "User registered successfully",
@@ -27,7 +25,6 @@ export const loginUserController = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: false,
-      // sameSite: "lax",
       maxAge: 24 * 60 * 60 * 1000,
     });
     res.status(200).json({

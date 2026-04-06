@@ -25,8 +25,13 @@ router.post(
   loginUserController,
 );
 router.get("/me", authMiddleware, (req, res) => {
+  res.status(200).json({ success: true, data: req.user });
+});
+router.post("/logout", authMiddleware, (req, res) => {
+  res.clearCookie("token");
   res.status(200).json({
-    user: req.user,
+    success: true,
+    message: "User logged out successfully",
   });
 });
 

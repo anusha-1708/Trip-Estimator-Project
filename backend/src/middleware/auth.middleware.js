@@ -18,7 +18,6 @@ export const authMiddleware = (req, res, next) => {
 };
 
 export const authValidationMiddleware = (schema) => {
-  console.log("Validation middleware called with schema:", schema);
   return (req, res, next) => {
     const { error } = schema.validate(req.body, { abortEarly: false });
     if (error) {

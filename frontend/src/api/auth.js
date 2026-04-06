@@ -1,9 +1,7 @@
 import api from "./axiosInstance";
 
 export const registerUser = async (data) => {
-  console.log("Data received in registerUser:", data);
   const response = await api.post("/auth/signup", data);
-  console.log("API Response in registerUser:", response);
   return response.data;
 };
 
