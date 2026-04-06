@@ -37,7 +37,7 @@ const Step3 = () => {
   };
 
   return (
-    <div>
+    <div className="overflow-y-auto">
       <h2 className="flex justify-center mt-4 font-bold text-xl">
         Add Other Expenses
       </h2>
@@ -62,7 +62,7 @@ const Step3 = () => {
           />
         </div>
       ))}
-      <div className="shadow-md rounded-md bg-green-400 text-white font-semibold text-base w-55 h-25 flex flex-col items-center mt-4 mx-auto p-2">
+      <div className="shadow-md rounded-md bg-green-400 text-white font-semibold text-base w-55 h-25 flex flex-col items-center mt-4 mx-auto p-2 ">
         <h3 className="font-bold items-center">Total Summary</h3>
         <div className="items-center inline mx-auto mt-2 justify-between">
           <span>Total Other Expenses :</span>
